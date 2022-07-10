@@ -1,0 +1,12 @@
+functions:
+- id: get
+  image: direktiv/request:v4
+  type: knative-workflow
+states:
+- id: getter 
+  type: action
+  action:
+    function: get
+    input: 
+      method: "GET"
+      url: "https://jsonplaceholder.typicode.com/todos/1"
