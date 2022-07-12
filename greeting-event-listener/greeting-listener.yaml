@@ -1,0 +1,53 @@
+# Example Input:
+# This input is a cloud event and was generated from the greeting-generate workflow.
+# {
+#   "greetingcloudevent": {
+#     "data": {
+#       "name": "Trent"
+#     },
+#     "datacontenttype": "application/json",
+#     "id": "2638e2d6-754e-409f-9038-f725e0d9d0af",
+#     "source": "Direktiv",
+#     "specversion": "1.0",
+#     "type": "greetingcloudevent"
+#   }
+# }
+#
+# Example Output
+# {
+#     "return": {
+#         "greeting": "Welcome to Direktiv, Trent!"
+#     }
+# }
+
+
+description: |
+  Passively listen for cloud events where the type equals "greetingcloudevent" and
+  then execute a action state to call the direktiv/greeting action, which 'greets' 
+  the user specified in the "name" field of the input provided to the workflow.
+
+  Because this workflow has a start of type event, directly executing this workflow 
+  is not necessary.
+
+#
+# Start of type event definition sets the workflow to be executed when a event
+# is triggered with the defined type 'greetingcloudevent'
+#
+start:
+  type: event
+  state: greeter
+  event:
+    type: greetingcloudevent
+
+functions:
+  - id: greeter
+    image: direktiv/greeting:v4
+    type: knative-workflow
+  
+states:
+  - id: greeter
+    type: action
+    action: 
+      function: greeter
+      input: jq(.greetingcloudevent)
+    transform: 'jq({ "greeting": .return.greeting })'

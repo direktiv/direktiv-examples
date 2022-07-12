@@ -1,0 +1,46 @@
+# Example Output:
+# {
+#   "person": {
+#     "address": {
+#       "buildingNumber": "8422",
+#       "city": "Ashleytown",
+#       "country": "Ethiopia",
+#       "county_code": "AD",
+#       "id": 0,
+#       "latitude": -21.509297,
+#       "longitude": -48.162169,
+#       "street": "47933 Kennedi View Apt. 395",
+#       "streetName": "Margie Stream",
+#       "zipcode": "44788"
+#     },
+#     "birthday": "1944-09-28",
+#     "email": "qmetz@gmail.com",
+#     "firstname": "Gabriella",
+#     "gender": "female",
+#     "id": 1,
+#     "image": "http://placeimg.com/640/480/people",
+#     "lastname": "Steuber",
+#     "phone": "+5542223225627",
+#     "website": "http://wiza.com"
+#   }
+# }
+
+description: |
+  Execute a HTTP request to generate a persons details from the fake data API fakerapi. 
+functions:
+- id: get
+  image: direktiv/request:v4
+  type: knative-workflow
+states:
+  #
+  # HTTP GET Fake person from fakerapi
+  # Transform data to get data out of body
+  #
+  - id: get-fake-persons
+    transform: "jq({person: .return.body.data[0]})" # This line can commented out to see complete action return
+    type: action
+    action:
+      function: get
+      input: 
+        method: "GET"
+        url: "https://fakerapi.it/api/v1/persons?_quantity=1"

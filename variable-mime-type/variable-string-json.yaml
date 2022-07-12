@@ -1,0 +1,16 @@
+description: |
+  Store the workflow variable 'StringVar' as a json encoded string.  
+
+states:
+  #
+  # Set StringVar Value: 
+  # "hello\nworld"
+  #
+  - id: set-var
+    type: setter
+    variables:
+      - key: StringVar
+        scope: workflow 
+        value: |
+          hello
+          world

@@ -1,0 +1,18 @@
+description: |
+  Store the workflow variable 'StringVar' as a plaintext string.  
+
+states:
+  #
+  # Set StringVar Value: 
+  # hello
+  # world
+  #
+  - id: set-var
+    type: setter
+    variables:
+      - key: StringVar
+        scope: workflow 
+        mimeType: 'text/plain'
+        value: |
+          hello
+          world

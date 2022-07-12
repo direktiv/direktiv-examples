@@ -1,5 +1,0 @@
-states:
-- id: hello
-  type: noop
-  transform:
-    msg: 'Hello, jq(.name // "World")!'

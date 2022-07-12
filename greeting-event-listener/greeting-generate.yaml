@@ -1,0 +1,24 @@
+description: |
+  Generate a cloud with of type "greetingcloudevent" with name data as input.
+
+states:
+  # Example Generated Cloud Event:
+  # {
+  #   "greetingcloudevent": {
+  #     "data": {
+  #       "name": "Trent"
+  #     },
+  #     "datacontenttype": "application/json",
+  #     "id": "2638e2d6-754e-409f-9038-f725e0d9d0af",
+  #     "source": "Direktiv",
+  #     "specversion": "1.0",
+  #     "type": "greetingcloudevent"
+  #   }
+  # }
+  - id: gen
+    type: generateEvent
+    event:
+      type: greetingcloudevent
+      source: Direktiv
+      data:
+        name: "Trent"

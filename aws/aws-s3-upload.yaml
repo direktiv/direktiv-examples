@@ -1,0 +1,58 @@
+# Required Secrets:
+# - ACCESS_KEY
+# - SECRET_ACCESS_KEY
+# Example Input:
+# {
+#   "fileData": "SGVsbG8sIHdvcmxkIQ==",
+#   "fileName": "message.txt"
+# }
+#
+
+description: |
+  This workflow will upload a file to a s3 bucket. The file name and data are
+  set in the input. The input property fileData can be a url encoded base64 string, or
+  just a standard base64 string.
+
+functions:
+  - id: s3
+    image: direktiv/amazon-upload:v4
+    type: knative-workflow
+
+states:
+    #
+    # Validate input and extract base64 string
+    #
+  - id: validate-input
+    type: validate
+    transition: upload-file
+    transform: jq(. + {fileData: .fileData | split("base64,")[-1]})
+    schema:
+      type: object
+      required:
+        - fileName
+        - fileData
+      properties:
+        fileName:
+          title: Filename
+          description: Filename to be set in s3 bucket
+          type: string
+        fileData:
+          title: File
+          description: File to upload
+          type: string
+          format: data-url
+  #
+  # Upload file on aws ec2
+  #
+  - id: upload-file
+    type: action
+    action:
+      function: s3
+      secrets: ["AWS_ACCESS_KEY", "AWS_SECRET_KEY"]
+      input:
+        bucket: direktiv
+        region: us-east-1
+        "upload-name": "jq(.fileName)"
+        data: "jq(.fileData)"
+        key: "jq(.secrets.AWS_ACCESS_KEY)"
+        secret: "jq(.secrets.AWS_SECRET_KEY)"

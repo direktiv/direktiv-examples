@@ -1,0 +1,57 @@
+# Example Input:
+# {
+#  "expressions": [
+#    "4+10",
+#    "15-14",
+#    "100*3",
+#    "200/2"
+#  ]
+# }
+#
+# Example Output:
+# The results of this foreach loop will be a json array of strings that have the solved answers.
+# {
+#   "solved": [
+#     "14",
+#     "1",
+#     "300",
+#     "100"
+#   ]
+# }
+
+
+description: |
+  Executes an action that solves a math expression. 
+  The workflow data input are the expressions you want to solve as a string array.
+
+functions:
+  - id: solve-math-expression
+    image: direktiv/solve:v3
+    type: knative-workflow
+
+states:
+  - id: validate-input
+    type: validate
+    schema:
+      type: object
+      required:
+      - expressions
+      properties:
+        expressions:
+          type: array
+          description: expressions to solve
+          title: Expressions
+          items:
+            type: string
+    transition: solve
+
+  #
+  # Execute solve action.
+  #
+  - id: solve
+    type: foreach
+    array: 'jq([.expressions[] | { expression: . }])'
+    action:
+      function: solve-math-expression
+      input: 'jq({ x: .expression })'
+    transform: 'jq({ solved: .return })'
