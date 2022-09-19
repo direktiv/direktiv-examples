@@ -1,0 +1,29 @@
+functions:
+- id: csvkit
+  image: gcr.io/direktiv/functions/csvkit:1.0
+  type: knative-workflow
+states:
+- id: set
+  type: setter
+  log: jq(.)
+  variables:
+  - key: in.xlsx
+    # mark this a binary file
+    mimeType: application/octet-stream
+    # for non-JSON input the data ends up as base64 in .input
+    value: 'jq(.input)'
+    scope: workflow
+  transition: convert 
+- id: convert
+  type: action
+  action:
+    function: csvkit
+    files: 
+    - key: in.xlsx
+      scope: workflow
+    input: 
+      convert: in.xlsx  
+      commands:
+        - command: csvjson out/instance/out.csv
+  transform:
+    json: jq(.return.csvkit[0].result)
