@@ -1,0 +1,4 @@
+states:
+- id: data
+  type: noop
+  log: jq(.)

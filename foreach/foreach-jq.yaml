@@ -1,0 +1,23 @@
+functions:
+- type: subflow
+  id: print
+  workflow: printer
+states:
+- id: data
+  type: noop
+  transform:
+    data:
+    - name: tuple1
+      value: value1
+    - name: tuple2
+      value: value2
+    - name: tuple3
+      value: value3
+    otherdata: somedata
+  transition: foreach
+- id: foreach
+  type: foreach
+  array: 'jq(.otherdata as $od | [.data[] | { name: .name, time: now, otherdata: $od }])'
+  action:
+    function: print
+    input: 'jq(.)'

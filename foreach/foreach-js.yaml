@@ -1,0 +1,42 @@
+functions:
+- type: subflow
+  id: print
+  workflow: printer
+states:
+- id: data
+  type: noop
+  transform:
+    data:
+    - name: tuple1
+      value: value1
+    - name: tuple2
+      value: value2
+    - name: tuple3
+      value: value3
+    otherdata: somedata
+  transition: foreach
+- id: foreach
+  type: foreach
+  array: |
+    js(
+      // empty array
+      const items = []
+
+      // loop over "data" attribute created in first state of workflow
+      for (let i = 0; i < data["data"].length; i++) { 
+          // create object and set attributes
+          item = new Object();  
+          item.name = data["data"][i]["name"]
+          item.time = Date.now()
+          item.otherdata = data["otherdata"]
+
+          // add item
+          items[i] = item
+      }
+
+      // return array of items
+      return items
+    )
+  action:
+    function: print
+    input: 'jq(.)'
