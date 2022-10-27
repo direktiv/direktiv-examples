@@ -1,0 +1,34 @@
+functions:
+- id: bash
+  image: gcr.io/direktiv/functions/bash:1.0
+  type: knative-workflow
+
+states:
+- id: set-value
+  type: setter
+  variables:
+  - key: x
+    scope: workflow
+    value: This is my value
+  transition: set-value-fn
+
+- id: set-value-fn
+  type: action
+  action:
+    function: bash
+    input: 
+      commands:
+      - command: bash -c 'echo \"my fn value\" > out/workflow/y'
+  transition: get-values
+
+- id: get-values
+  type: getter
+  variables:
+  - key: x
+    scope: workflow
+  - key: y
+    scope: workflow
+  transform:
+    my-x: jq(.var.x)
+    my-y: jq(.var.y)
+
