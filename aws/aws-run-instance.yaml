@@ -1,28 +1,17 @@
-# Required Secrets:
-# - ACCESS_KEY
-# - SECRET_ACCESS_KEY
-
-description: |
-  This workflow will create a new t2.small instance on ec2 ap-southeast-2 region.
-  The workflow uses the 'awsgo' action which executes the cli command passed in the command
-  input parameter. NOTE: The secret ACCESS_KEY and SECRET_ACCESS_KEY are required.
-
 functions:
-  - id: ec2
-    image: direktiv/awsgo:v4
-    type: knative-workflow
+- id: aws-cli
+  image: gcr.io/direktiv/functions/aws-cli:1.0
+  type: knative-workflow
 
 states:
-  #
-  # Start instance on aws ec2
-  #
-  - id: start-instance
-    type: action
-    action:
-      secrets: ["ACCESS_KEY", "ACCESS_SECRET"]
-      function: ec2
-      input: 
-        "access-key": jq(.secrets.ACCESS_KEY)
-        "access-secret": jq(.secrets.ACCESS_SECRET)
-        "region": "ap-southeast-2"
-        command: ["ec2", "run-instances", "--image-id", "ami-07620139298af599e" ,"--instance-type", "t2.small"]
+- id: start-instance
+  type: action
+  action:
+    secrets: ["ACCESS_KEY", "ACCESS_SECRET"]
+    function: aws-cli
+    input: 
+      access-key: jq(.secrets.ACCESS_KEY)
+      secret-key: jq(.secrets.ACCESS_SECRET)
+      region: ap-southeast-2
+      commands: 
+      - command: aws ec2 run-instances --image-id ami-07620139298af599e --instance-type t2.small
