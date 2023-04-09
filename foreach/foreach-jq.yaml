@@ -1,23 +1,26 @@
 functions:
-- type: subflow
-  id: print
-  workflow: printer
+- id: echo
+  image: gcr.io/direktiv/functions/echo:1.0
+  type: knative-workflow
+  
 states:
+
 - id: data
   type: noop
   transform:
     data:
-    - name: tuple1
+    - name: key1
       value: value1
-    - name: tuple2
+    - name: key2
       value: value2
-    - name: tuple3
+    - name: key3
       value: value3
     otherdata: somedata
   transition: foreach
+
 - id: foreach
   type: foreach
   array: 'jq(.otherdata as $od | [.data[] | { name: .name, time: now, otherdata: $od }])'
   action:
-    function: print
+    function: echo
     input: 'jq(.)'

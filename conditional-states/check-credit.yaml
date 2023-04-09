@@ -1,14 +1,3 @@
-# Example Input:
-# {
-#   "creditMinRequired": 500,
-#   "creditScore": 600
-# }
-#
-# Example Output:
-# {
-#   "msg": "You have been approved for this loan"
-# }
-
 description: |
   Conditionally transition to states depending if input credit score is higher
   or lower than creditMinRequired.

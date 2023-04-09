@@ -1,17 +1,18 @@
 functions:
-- type: subflow
-  id: print
-  workflow: printer
+- id: echo
+  image: gcr.io/direktiv/functions/echo:1.0
+  type: knative-workflow
+
 states:
 - id: data
   type: noop
   transform:
     data:
-    - name: tuple1
+    - name: key1
       value: value1
-    - name: tuple2
+    - name: key2
       value: value2
-    - name: tuple3
+    - name: key3
       value: value3
     otherdata: somedata
   transition: foreach
@@ -22,7 +23,7 @@ states:
       // empty array
       const items = []
 
-      // loop over "data" attribute created in first state of workflow
+      // loop over "data" attribute created in first state of flow
       for (let i = 0; i < data["data"].length; i++) { 
           // create object and set attributes
           item = new Object();  
@@ -38,5 +39,5 @@ states:
       return items
     )
   action:
-    function: print
+    function: echo
     input: 'jq(.)'

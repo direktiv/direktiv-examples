@@ -1,4 +1,23 @@
+functions:
+- id: echo
+  image: gcr.io/direktiv/functions/echo:1.0
+  type: knative-workflow
+
 states:
+
 - id: data
   type: noop
-  log: jq(.)
+  log: preparing foreach data
+  transform:
+    names:
+    - hello
+    - world
+    - goodbye
+  transition: foreach
+  
+- id: foreach
+  type: foreach
+  array: 'jq([.names[] | { name: . }])'
+  action:
+    function: echo
+    input: 'jq(.)'

@@ -28,19 +28,19 @@
 description: |
   Execute a HTTP request to generate a persons details from the fake data API fakerapi. 
 functions:
-- id: get
-  image: direktiv/request:v4
+- id: http-request
+  image: gcr.io/direktiv/functions/http-request:1.0
   type: knative-workflow
 states:
-  #
-  # HTTP GET Fake person from fakerapi
-  # Transform data to get data out of body
-  #
-  - id: get-fake-persons
-    transform: "jq({person: .return.body.data[0]})" # This line can commented out to see complete action return
-    type: action
-    action:
-      function: get
-      input: 
-        method: "GET"
-        url: "https://fakerapi.it/api/v1/persons?_quantity=1"
+#
+# HTTP GET Fake person from fakerapi
+# Transform data to get data out of body
+#
+- id: get-fake-persons
+  transform: "jq({person: .return[0].result.data[0]})"
+  type: action
+  action:
+    function: http-request
+    input: 
+      method: "GET"
+      url: "https://fakerapi.it/api/v1/persons?_quantity=1"

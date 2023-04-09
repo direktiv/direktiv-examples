@@ -4,7 +4,8 @@ This example show how to handle input which is not JSON. This example uses a XLS
 
 If Direktiv gets non-JSON input, in this case a binary file, it encodes it as Base64 and starts the workflow with a an `input` variable containing the binary file. 
 
+[Convert Flow](workflow.yaml)
 
-```console
-curl -XPOST --data-binary @data.xlsx http://MYSERVER/api/namespaces/direktiv-examples/tree/input-convert/workflow?op=wait
+```console title="Push Data to Flow"
+curl -XPOST --data-binary @data.xlsx http://MYSERVER/api/namespaces/examples/tree/input-convert/workflow?op=wait
 ```

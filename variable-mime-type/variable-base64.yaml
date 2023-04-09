@@ -3,14 +3,14 @@ description: |
   as the workflow variable 'MessageVar'.  
 
 states:
-  #
-  # Set MessageVar Value: 
-  # hello from direktiv
-  #
-  - id: set-var
-    type: setter
-    variables:
-      - key: MessageVar
-        scope: workflow 
-        value: 'aGVsbG8gZnJvbSBkaXJla3Rpdg=='
-        mimeType: 'application/octet-stream'
+#
+# Set MessageVar Value: 
+# hello from direktiv
+#
+- id: set-var
+  type: setter
+  variables:
+    - key: MessageVar
+      scope: workflow 
+      value: 'aGVsbG8gZnJvbSBkaXJla3Rpdg=='
+      mimeType: 'application/octet-stream'

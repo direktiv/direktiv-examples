@@ -1,5 +1,5 @@
 description: |
-  Store the workflow variable 'StringVar' as a json encoded string.  
+  Store the workflow variable 'StringVar' as a json.  
 
 states:
 #
@@ -11,6 +11,6 @@ states:
   variables:
     - key: StringVar
       scope: workflow 
-      value: |
-        hello
-        world
+      value: 
+        - key: value
+      

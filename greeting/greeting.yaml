@@ -1,46 +1,48 @@
 # Example Input:
 # {
-#     "name": "Trent"
+#     "name": "World"
 # }
 #
 # Example Output:
 # The results of this action will contain a greeting addressed to the provided name.
 # {
 #     "return": {
-#         "greeting": "Welcome to Direktiv, Trent!"
+#         "greeting": "Welcome to Direktiv, World!"
 #     }
 # }
 
 
 description: |
   Execute a action state to call the direktiv/greeting action, which 'greets' 
-  the user specified in the "name" field of the input provided to the workflow.
+  the user specified in the "name" field of the input provided to the flow.
 
 functions:
-  - id: greeter
-    image: direktiv/greeting:v4
-    type: knative-workflow
+- id: greeter
+  image: gcr.io/direktiv/functions/hello-world:1.0
+  type: knative-workflow
 
 states:
-  - id: validate-input
-    type: validate
-    schema:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Name to greet
-          title: Name
-    transition: greeter
+- id: validate-input
+  type: validate
+  schema:
+    type: object
+    required:
+    - name
+    properties:
+      name:
+        type: string
+        description: Name to greet
+        title: Name
+  transition: greeter
 
-  #
-  # Execute greeter action.
-  #
-  - id: greeter
-    type: action
-    action: 
-      function: greeter
-      input: jq(.)
-    transform: 'jq({ "greeting": .return.greeting })'
+#
+# Execute greeter action.
+#
+- id: greeter
+  type: action
+  log: jq(.)
+  action: 
+    function: greeter
+    input: 
+      name: jq(.name)
+  transform: 'jq({ "greeting": .return."hello-world" })'

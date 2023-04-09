@@ -7,6 +7,7 @@ states:
   type: action
   action:
     function: python
+    # use AWS key and secret
     secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
     files:
     - key: python.py

@@ -6,7 +6,7 @@ states:
   # {
   #   "greetingcloudevent": {
   #     "data": {
-  #       "name": "Trent"
+  #       "name": "World"
   #     },
   #     "datacontenttype": "application/json",
   #     "id": "2638e2d6-754e-409f-9038-f725e0d9d0af",
@@ -15,10 +15,10 @@ states:
   #     "type": "greetingcloudevent"
   #   }
   # }
-  - id: gen
-    type: generateEvent
-    event:
-      type: greetingcloudevent
-      source: Direktiv
-      data:
-        name: "Trent"
+- id: gen
+  type: generateEvent
+  event:
+    type: greetingcloudevent
+    source: Direktiv
+    data:
+      name: "World"

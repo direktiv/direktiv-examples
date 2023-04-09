@@ -2,6 +2,8 @@ functions:
 - id: csvkit
   image: gcr.io/direktiv/functions/csvkit:1.0
   type: knative-workflow
+
+# Fetch base64 input and store it workflow variable
 states:
 - id: set
   type: setter
@@ -14,6 +16,8 @@ states:
     value: 'jq(.input)'
     scope: workflow
   transition: convert 
+
+# Takes the workflow variable and converts it
 - id: convert
   type: action
   action:
@@ -22,8 +26,8 @@ states:
     - key: in.xlsx
       scope: workflow
     input: 
-      convert: in.xlsx  
       commands:
-        - command: csvjson out/instance/out.csv
+      - command: bash -c 'in2csv in.xlsx > out.csv'
+      - command: csvjson out.csv
   transform:
-    json: jq(.return.csvkit[0].result)
+    json: jq(.return.csvkit[1].result[0])

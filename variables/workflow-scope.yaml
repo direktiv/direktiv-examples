@@ -4,14 +4,17 @@ functions:
   type: knative-workflow
 
 states:
+
+# Sets the variable in instance scope
 - id: set-value
   type: setter
   variables:
   - key: x
-    scope: workflow
+    scope: instance
     value: This is my value
   transition: set-value-fn
 
+# Sets the variable in workflow scope with writing to the special "out" folder
 - id: set-value-fn
   type: action
   action:
@@ -21,11 +24,12 @@ states:
       - command: bash -c 'echo \"my fn value\" > out/workflow/y'
   transition: get-values
 
+# fetch values
 - id: get-values
   type: getter
   variables:
   - key: x
-    scope: workflow
+    scope: instance
   - key: y
     scope: workflow
   transform:

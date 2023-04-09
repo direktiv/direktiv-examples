@@ -25,9 +25,9 @@ description: |
   The workflow data input are the expressions you want to solve as a string array.
 
 functions:
-  - id: solve-math-expression
-    image: direktiv/solve:v3
-    type: knative-workflow
+- id: solve-math-expression
+  image: gcr.io/direktiv/functions/bash:1.0
+  type: knative-workflow
 
 states:
   - id: validate-input
@@ -53,5 +53,7 @@ states:
     array: 'jq([.expressions[] | { expression: . }])'
     action:
       function: solve-math-expression
-      input: 'jq({ x: .expression })'
-    transform: 'jq({ solved: .return })'
+      input: 
+        commands: 
+        - command: bash -c "echo $((jq(.expression)))"
+    transform: 'jq({ solved: [.return[] | .bash[0].result ] })'

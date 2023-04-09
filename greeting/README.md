@@ -1,58 +1,21 @@
-<!-- ORDER=1 -->
 # Greeting Example
 
-This simple example workflow uses a single `action` state to call the `direktiv/greeting` action, which 'greets' the user specified in the `"name"` field of the input provided to the workflow.
+This simple example flow uses a single `action` state to call the `hello-world` action, which 'greets' the user specified in the `"name"` field of the input provided to the flow. The validate state ensures the input is valid.
 
-## Workflow YAML
+[Greeter Flow](greeting.yaml)
 
-```yaml
-functions:
-- id: greeter
-  image: direktiv/greeting:v4
-  type: knative-workflow
 
-states:
-- id: validate-input
-  type: validate
-  schema:
-    type: object
-    required:
-    - name
-    properties:
-      name:
-        type: string
-        description: Name to greet
-        title: Name
-  transition: greeter
-
-#
-# Execute greeter action.
-#
-- id: greeter
-  type: action
-  action: 
-    function: greeter
-    input: jq(.)
-  transform: 'jq({ "greeting": .return.greeting })'
-```
-
-## Input
-
-```json
+```json title="Input"
 {
-    "name": "Trent"
+    "name": "World"
 }
 ```
 
-## Output
-
 The results of this action will contain a greeting addressed to the provided name.
 
-```json
+```json title="Output"
 {
-    "return": {
-        "greeting": "Welcome to Direktiv, Trent!"
-    }
+  "greeting": "Hello World"
 }
 ```
 
