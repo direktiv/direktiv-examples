@@ -1,0 +1,4 @@
+states:
+- id: print
+  type: noop
+  log: jq(.)

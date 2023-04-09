@@ -1,0 +1,14 @@
+functions:
+# Define subflow function
+- id: sub
+  workflow: subflow
+  type: subflow
+
+# Call subflow with input values
+states:
+- id: call-sub 
+  type: action
+  action:
+    function: sub
+    input: 
+      key: value

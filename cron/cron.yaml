@@ -1,0 +1,8 @@
+start:
+  type: scheduled
+  cron: '* * * * *' # Trigger a new instance every minute.
+
+states:
+- id: run
+  type: noop
+  log: Run Cron
