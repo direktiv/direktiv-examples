@@ -1,6 +1,6 @@
 functions:
 - id: csvkit
-  image: gcr.io/direktiv/functions/csvkit:1.0
+  image: direktiv/csvkit:dev
   type: knative-workflow
 
 # Fetch base64 input and store it workflow variable

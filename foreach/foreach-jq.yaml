@@ -1,6 +1,6 @@
 functions:
 - id: echo
-  image: gcr.io/direktiv/functions/echo:1.0
+  image: direktiv/echo:dev
   type: knative-workflow
   
 states:

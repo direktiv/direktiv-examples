@@ -1,6 +1,6 @@
 functions:
 - id: aws-cli
-  image: gcr.io/direktiv/functions/aws-cli:1.0
+  image: direktiv/aws-cli:dev
   type: knative-workflow
 
 states:
