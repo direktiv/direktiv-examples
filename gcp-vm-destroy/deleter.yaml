@@ -1,0 +1,53 @@
+functions:
+- id: gcp
+  image: gcr.io/direktiv/functions/gcp:1.0
+  type: knative-workflow
+
+states:
+
+# waits for the delete event, if it times out it deletes the VM anyways
+- id: wait
+  type: consumeEvent
+  timeout: PT1H
+  log: waiting for delete event for jq(.name)
+  event:
+    type: io.direktiv.gcp.vm.delete 
+    context:
+      name: jq(.name)
+  transition: check-instance
+  catch:
+  - error: "direktiv.cancels.timeout.soft"
+    transition: check-instance
+
+# lists instances to check if there is something to delete
+- id: check-instance
+  type: action
+  action:
+    function: gcp
+    secrets: ["gcpJSONKey", "gcpProject", "gcpAccount"]
+    input: 
+      account: jq(.secrets.gcpAccount)
+      project: jq(.secrets.gcpProject)
+      key: jq(.secrets.gcpJSONKey | @base64 )
+      commands:
+      - command: gcloud compute instances list --filter="name=jq(.name)" --format json
+  transition: length-check
+
+# if the previous state returns a VM it proceeds to deleting
+- id: length-check
+  type: switch
+  conditions:
+  - condition: 'jq(.return.gcp[0].result | length > 0)'
+    transition: delete
+
+- id: delete
+  type: action
+  action:
+    function: gcp
+    secrets: ["gcpJSONKey", "gcpProject", "gcpAccount"]
+    input: 
+      account: jq(.secrets.gcpAccount)
+      project: jq(.secrets.gcpProject)
+      key: jq(.secrets.gcpJSONKey | @base64 )
+      commands:
+      - command: gcloud compute instances delete jq(.name) --zone=jq(.zone) -q

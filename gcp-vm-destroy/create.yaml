@@ -1,0 +1,69 @@
+functions:
+- id: gcp
+  image: gcr.io/direktiv/functions/gcp:1.0
+  type: knative-workflow
+- id: deleter 
+  type: subflow
+  workflow: deleter.yaml
+
+states:
+
+# validate input for flow
+- id: input
+  type: validate
+  schema:
+    title: Create GCP VM
+    type: object
+    required: ["name"]
+    properties:
+      name:
+        type: string
+        title: VM Name
+      disk:
+        type: string
+        title: Disk Size
+      zone:
+        type: string
+        title: Zone
+      machine:
+        type: string
+        title: Machine Type
+      tags:
+        type: array
+        items:
+          type: string
+  transform:
+    name: jq(.name)
+    disk: jq(.disk // "10GB")
+    zone: jq(.zone // "us-west2-a")
+    machine: jq(.machine // "e2-standard-16")
+    tags: jq(.tags // [])
+  transition: gcp
+
+# create vm with parameters provided
+- id: gcp
+  type: action
+  action:
+    function: gcp
+    secrets: ["gcpJSONKey", "gcpProject", "gcpAccount"]
+    input: 
+      account: jq(.secrets.gcpAccount)
+      project: jq(.secrets.gcpProject)
+      key: jq(.secrets.gcpJSONKey | @base64 )
+      commands:
+      - command: gcloud compute instances create jq(.name) --boot-disk-size jq(.disk) --zone jq(.zone) --machine-type jq(.machine) jq(if .tags then "--tags " + (.tags | join(",")) end) --format=json
+  transition: load-delete
+
+# start the delete flow
+- id: load-delete
+  type: action
+  async: true
+  action:
+    function: deleter
+    input:
+      name: jq(.name)
+      zone: jq(.zone)
+  
+
+
+

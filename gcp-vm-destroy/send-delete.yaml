@@ -1,0 +1,8 @@
+states:
+- id: a
+  type: generateEvent
+  event:
+    type: io.direktiv.gcp.vm.delete
+    source: direktiv
+    context:
+      name: jq(.name)
