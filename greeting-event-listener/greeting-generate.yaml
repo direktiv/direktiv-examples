@@ -1,3 +1,5 @@
+direktiv_api: workflow/v1
+
 description: |
   Generate a cloud with of type "greetingcloudevent" with name data as input.
 

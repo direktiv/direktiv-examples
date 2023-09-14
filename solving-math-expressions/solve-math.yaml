@@ -19,6 +19,7 @@
 #   ]
 # }
 
+direktiv_api: workflow/v1
 
 description: |
   Executes an action that solves a math expression. 

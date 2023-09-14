@@ -1,3 +1,5 @@
+direktiv_api: workflow/v1
+
 functions:
 - id: gcp
   image: gcr.io/direktiv/functions/gcp:1.0

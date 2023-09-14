@@ -1,3 +1,5 @@
+direktiv_api: workflow/v1
+
 description: |
   Conditionally transition to states depending if input credit score is higher
   or lower than creditMinRequired.

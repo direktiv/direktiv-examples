@@ -1,3 +1,5 @@
+direktiv_api: workflow/v1
+
 description: |
   Store the workflow variable 'StringVar' as a json.  
 
