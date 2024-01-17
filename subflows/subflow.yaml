@@ -1,3 +1,4 @@
+direktiv_api: workflow/v1
 states:
 - id: print
   type: noop

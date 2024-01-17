@@ -20,6 +20,7 @@
 #     }
 # }
 
+direktiv_api: workflow/v1
 
 description: |
   Passively listen for cloud events where the type equals "greetingcloudevent" and

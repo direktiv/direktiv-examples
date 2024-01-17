@@ -1,3 +1,5 @@
+direktiv_api: workflow/v1
+
 functions:
 # Define subflow function
 - id: sub
