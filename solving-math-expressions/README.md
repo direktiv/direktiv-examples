@@ -1,6 +1,8 @@
 # Solving Math Expressions
 
-This example shows how we can iterate over data using the [ForEach](../../specification#foreachstate) state. Which executes an action that solves a math expression. The flow data input are the expressions you want to solve as a string array.
+/spec/workflow-yaml/foreach/
+
+This example shows how we can iterate over data using the [ForEach](../spec/foreach.md#foreachstate) state. Which executes an action that solves a math expression. The flow data input are the expressions you want to solve as a string array.
 
 The example demonstrates the use of an action isolate to solve a number of mathematical expressions using a `foreach` state. For each expression in the input array, the isolate will be run once. 
 
