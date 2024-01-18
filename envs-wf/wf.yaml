@@ -1,0 +1,16 @@
+direktiv_api: workflow/v1
+functions:
+- id: bash
+  image: gcr.io/direktiv/functions/bash:1.0
+  type: knative-workflow
+  envs:
+  - name: HELLO
+    value: world
+states:
+- id: hello 
+  type: action
+  action:
+    function: bash
+    input: 
+      commands:
+      - command: bash -c "echo $HELLO"
