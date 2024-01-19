@@ -1,0 +1,15 @@
+direktiv_api: workflow/v1
+functions:
+- id: get
+  service: /services/s1.yaml
+  type: knative-namespace
+states:
+- id: getter 
+  type: action
+  action:
+    function: get
+    input: 
+      method: "GET"
+      url: "https://jsonplaceholder.typicode.com/todos/1"
+
+
