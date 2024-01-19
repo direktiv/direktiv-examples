@@ -1,14 +1,23 @@
 direktiv_api: workflow/v1
-description: A simple 'action' state that sends a get request
 functions:
-- id: get
-  image: direktiv/request:v4
+- id: patch
+  image: gcr.io/direktiv/functions/http-request:1.0
   type: knative-workflow
+  patches:
+  - op: add
+    path: /spec/template/metadata/annotations
+    Value: { "my": "annotations" }
+  - op: add
+    path: /spec/template/metadata/labels
+    Value: { "my": "labels" }
+  - op: add
+    path: /spec/template/spec/containers/0/resources/requests/cpu
+    Value: 250m
 states:
 - id: getter 
   type: action
   action:
-    function: get
+    function: patch
     input: 
       method: "GET"
       url: "https://jsonplaceholder.typicode.com/todos/1"

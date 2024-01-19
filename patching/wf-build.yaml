@@ -1,14 +1,32 @@
 direktiv_api: workflow/v1
-description: A simple 'action' state that sends a get request
 functions:
-- id: get
-  image: direktiv/request:v4
+- id: build
+  image: quay.io/buildah/stable:v1.32.2 
+  cmd: /usr/share/direktiv/direktiv-cmd
   type: knative-workflow
+  size: large
+  envs:
+  - name: STORAGE_DRIVER
+    value: vfs
+  patches:
+  - op: add
+    path: /spec/template/metadata/annotations/container.apparmor.security.beta.kubernetes.io~1direktiv-container
+    value: unconfined
 states:
-- id: getter 
+- id: builder
   type: action
   action:
-    function: get
-    input: 
-      method: "GET"
-      url: "https://jsonplaceholder.typicode.com/todos/1"
+    function: build
+    secrets: ["user", "pwd"]
+    input:
+      files:
+      - name: Dockerfile
+        content: FROM docker.io/nginx:1.23.3-alpine
+        permission: 0755
+      data:
+        commands:
+        - command: buildah login -u jq(.secrets.user) -p jq(.secrets.pwd) docker.io
+          suppress_command: true
+        - command: buildah bud --tag "jq(.secrets.user)/deleteme" --manifest multi --arch amd64 .
+        - command: buildah bud --tag "jq(.secrets.user)/deleteme" --manifest multi --arch arm64 .
+        - command: buildah manifest push --all multi "docker://docker.io/jq(.secrets.user)/deleteme" 
