@@ -1,0 +1,15 @@
+direktiv_api: workflow/v1
+functions:
+- id: get
+  image: python:3.13.0a3-bookworm
+  type: knative-workflow
+  cmd: /usr/share/direktiv/direktiv-cmd
+states:
+- id: getter 
+  type: action
+  action:
+    function: get
+    input: 
+      data:
+        commands:
+        - command: python3 -c "print('hello world')"
