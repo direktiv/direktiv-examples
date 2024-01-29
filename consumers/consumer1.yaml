@@ -1,0 +1,8 @@
+direktiv_api: "consumer/v1"
+username: "demo"
+password: "password"
+api_key: "apikey"
+tags:
+  - "tag1"
+groups:
+  - "group1"

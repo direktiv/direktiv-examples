@@ -1,0 +1,6 @@
+direktiv_api: "consumer/v1"
+username: "demo2"
+password: "password2"
+api_key: "apikey2"
+groups:
+  - "group2"
