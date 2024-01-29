@@ -1,0 +1,11 @@
+direktiv_api: "endpoint/v1"
+path: "/hello"
+methods:
+  - "GET"
+plugins:
+  target:
+    type: "target-flow"
+    configuration:
+      flow: "/gw/wf1.yaml"
+      async: false
+allow_anonymous: true

@@ -1,0 +1,6 @@
+direktiv_api: workflow/v1
+states:
+- id: helloworld
+  type: noop
+  transform:
+    result: Hello From Gateway!
