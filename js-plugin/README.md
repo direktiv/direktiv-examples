@@ -15,4 +15,6 @@ This example uses a path parameter and a bit more complex Javascript.
 - The plugin moves the original request in an object `original`
 - The plugin gets the value of a query param `action` and puts it in `action` in the object
 
+The URL would look like this: `http://YOUR-SERVER/ns/examples/js-action?action=do-it`
+
 [Advanced Javascript](jsroute-advanced.yaml)
