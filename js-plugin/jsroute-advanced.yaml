@@ -13,6 +13,8 @@ plugins:
     - type: "js-inbound"
       configuration:
         script: |
-          input["Headers"].Add("Header1", "Value1")
-          input["Headers"] = null
-          input["Queries"] = null
+          b = JSON.parse(input["Body"]) 
+          const body = new Map();
+          body['action'] = input["Queries"].Get("action")[0]
+          body["original"] = b
+          input["Body"] = JSON.stringify(body)  

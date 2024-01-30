@@ -11,3 +11,8 @@ The flow receiving that request will have an additional header called `Header1`.
 ## Advanced Example
 
 This example uses a path parameter and a bit more complex Javascript. 
+
+- The plugin moves the original request in an object `original`
+- The plugin gets the value of a query param `action` and puts it in `action` in the object
+
+[Advanced Javascript](jsroute-advanced.yaml)
