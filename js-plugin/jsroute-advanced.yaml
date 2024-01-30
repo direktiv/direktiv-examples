@@ -1,6 +1,6 @@
 direktiv_api: "endpoint/v1"
 allow_anonymous: true
-path: "/js"
+path: "/js/{name}"
 methods:
   - "GET"
 plugins:
@@ -14,9 +14,5 @@ plugins:
       configuration:
         script: |
           input["Headers"].Add("Header1", "Value1")
-    - type: "request-convert"
-      configuration:
-        omit_headers: false
-        omit_queries: false
-        omit_body: false
-        omit_consumer: false
+          input["Headers"] = null
+          input["Queries"] = null
