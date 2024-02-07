@@ -1,0 +1,16 @@
+direktiv_api: workflow/v1
+
+functions:
+- id: python
+  image: python
+  type: knative-workflow
+  cmd: /usr/share/direktiv/direktiv-cmd
+states:
+- id: python
+  type: action
+  action:
+    function: python
+    input: 
+      data:
+        commands:
+        - command: ls -la
