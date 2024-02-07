@@ -11,6 +11,11 @@ states:
   action:
     function: python
     input: 
+      files:
+      - name: script.py
+        content: |
+          print("Hello, World!")
+        permission: 0755
       data:
         commands:
-        - command: ls -la
+        - command: python ./script.py
